@@ -1,17 +1,11 @@
-import { createContext, useState, useContext, useEffect } from "react";
-
-const MovieContext = createContext()
-
-export const useMovieContext = () => useContext(MovieContext)
+import { useState, useEffect } from "react";
+import { MovieContext } from "./createMovieContext"
 
 export const MovieProvider = ({children}) => {
-  const [favorites, setFavorites] = useState([])
-
-  useEffect(() => {
+  const [favorites, setFavorites] = useState(() => {
     const storedFavs = localStorage.getItem("favorites")
-
-    if (storedFavs) setFavorites(JSON.parse(storedFavs))
-  }, [])
+    return storedFavs ? JSON.parse(storedFavs) : []
+  })
 
   useEffect(() => {
     localStorage.setItem('favorites', JSON.stringify(favorites))
